@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>let's get some food</title>
+  <meta name="description"
+    content="Local spots, deals under $20, and free food events in Calgary. No app, no sign-up, no algorithm.">
+  <meta property="og:title" content="let's get some food">
+  <meta property="og:description" content="Local spots, deals under $20, and free food events in Calgary.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.4;
+      padding: 24px 18px 80px;
+      max-width: 760px;
+      margin: 0 auto;
+      font-size: 16px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .sub {
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .disclaimer {
+      font-size: 12px;
+      color: #666;
+      margin: 8px 0 0;
+      max-width: 560px;
+    }
+
+    .links {
+      margin: 34px 0 0;
+    }
+
+    .biglink {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      width: 100%;
+      text-align: left;
+      border: none;
+      border-top: 2px solid #000;
+      background: #fff;
+      font-family: inherit;
+      cursor: pointer;
+      padding: 20px 2px;
+      color: #000;
+    }
+
+    .links .biglink:last-child {
+      border-bottom: 2px solid #000;
+    }
+
+    .biglink:hover {
+      background: #f4f4f4;
+    }
+
+    .biglink .lbl {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .biglink .note {
+      font-size: 13px;
+      color: #666;
+      margin-top: 3px;
+    }
+
+    .biglink .arrow {
+      font-size: 26px;
+      flex-shrink: 0;
+      margin-left: 12px;
+    }
+
+    .home-footer {
+      margin-top: 28px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .home-footer a {
+      color: #000;
+    }
+
+    .back {
+      font-size: 13px;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      font-family: inherit;
+      cursor: pointer;
+      padding: 0;
+      color: #000;
+      margin-bottom: 22px;
+      display: inline-block;
+    }
+
+    .cat-header {
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #000;
+    }
+
+    .cat-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .cat-desc {
+      font-size: 13px;
+      color: #000;
+    }
+
+    .grouplabel {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #999;
+      margin: 18px 0 6px;
+    }
+
+    .filter-row {
+      display: flex;
+      overflow-x: auto;
+      gap: 6px;
+      align-items: center;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+    }
+
+    .filter-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pill {
+      font-family: inherit;
+      font-size: 13px;
+      border: 1px solid #000;
+      background: #fff;
+      color: #000;
+      padding: 5px 12px;
+      cursor: pointer;
+      border-radius: 0;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pill:hover {
+      background: #f0f0f0;
+    }
+
+    .pill.active {
+      background: #000;
+      color: #fff;
+    }
+
+    select.more {
+      font-family: inherit;
+      font-size: 13px;
+      border: 1px solid #000;
+      background: #fff;
+      color: #000;
+      padding: 5px 9px;
+      border-radius: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .sort-bar {
+      display: flex;
+      overflow-x: auto;
+      gap: 6px;
+      align-items: center;
+      margin-top: 16px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+    }
+
+    .sort-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sort-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #999;
+      margin-right: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .sort-btn {
+      font-family: inherit;
+      font-size: 12px;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #666;
+      padding: 4px 10px;
+      cursor: pointer;
+      border-radius: 0;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .sort-btn:hover {
+      border-color: #000;
+      color: #000;
+    }
+
+    .sort-btn.active {
+      border-color: #000;
+      color: #000;
+      font-weight: 700;
+    }
+
+    .count {
+      font-size: 12px;
+      color: #666;
+      margin: 20px 0 8px;
+    }
+
+    .clear {
+      font-size: 12px;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-left: 10px;
+      color: #000;
+      background: none;
+      border: none;
+      font-family: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid #e6e6e6;
+    }
+
+    .name {
+      font-weight: 700;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .deal-line {
+      font-size: 13px;
+      color: #000;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      font-size: 13px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .actions a {
+      text-decoration: underline;
+      color: #000;
+    }
+
+    .actions .nw {
+      color: #999;
+    }
+
+    .cat-note {
+      font-size: 11px;
+      color: #999;
+      line-height: 1.5;
+      margin-top: 28px;
+      border-top: 1px solid #e6e6e6;
+      padding-top: 12px;
+    }
+
+    .browse-footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #666;
+      border-top: 1px solid #e6e6e6;
+      padding-top: 18px;
+    }
+
+    .browse-footer a {
+      color: #000;
+    }
+
+    .loading {
+      font-size: 13px;
+      color: #999;
+      padding: 20px 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .empty {
+      font-size: 14px;
+      color: #666;
+      padding: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HOME -->
+  <div id="home">
+    <h1>let's get some food</h1>
+    <div class="sub">the fastest way to decide where to eat in calgary.</div>
+    <div class="disclaimer">a free guide to eating well in calgary. local spots, good deals, and free food events.
+      curated and updated constantly. always open to submissions.</div>
+    <div class="links">
+      <button class="biglink" onclick="openBrowse('good')">
+        <span>
+          <span class="lbl">local spots</span>
+          <div class="note">calgary originals. places that started here, belong here, and you won't find just anywhere.
+          </div>
+        </span>
+        <span class="arrow">&rarr;</span>
+      </button>
+      <button class="biglink" onclick="openBrowse('cheap')">
+        <span>
+          <span class="lbl">under $20*</span>
+          <div class="note">meals listed at or under $20 before tax. prices change. always confirm before you order.
+          </div>
+        </span>
+        <span class="arrow">&rarr;</span>
+      </button>
+      <button class="biglink" onclick="openBrowse('free')">
+        <span>
+          <span class="lbl">eat for free*</span>
+          <div class="note">free food events happening around calgary. if nothing is listed, nothing is on right now.
+          </div>
+        </span>
+        <span class="arrow">&rarr;</span>
+      </button>
+    </div>
+    <div class="home-footer">
+      publicly available info, organized. verify before you go. &nbsp;&middot;&nbsp;
+      <a href="faq.html">what is this?</a> &nbsp;&middot;&nbsp;
+      <a href="legal.html">terms &amp; privacy</a>
+    </div>
+  </div>
+
+  <!-- BROWSE -->
+  <div id="browse" class="hidden">
+    <button class="back" onclick="goHome()">&larr; back</button>
+    <div class="cat-header">
+      <div class="cat-title" id="cat-title"></div>
+      <div class="cat-desc" id="cat-desc"></div>
+    </div>
+    <div id="filter-block">
+      <div class="grouplabel">what are you feeling</div>
+      <div class="filter-row" id="craving-filters"></div>
+      <div class="grouplabel">by cuisine</div>
+      <div class="filter-row" id="cuisine-filters"></div>
+      <div class="grouplabel">neighbourhood</div>
+      <div class="filter-row" id="location-filters"></div>
+    </div>
+    <div id="sort-bar" class="sort-bar hidden">
+      <span class="sort-label">sort</span>
+      <button class="sort-btn active" data-sort="default" onclick="setSort('default')">default</button>
+      <button class="sort-btn" data-sort="alpha" onclick="setSort('alpha')">a&ndash;z</button>
+      <button class="sort-btn" data-sort="recent" onclick="setSort('recent')">recently added</button>
+    </div>
+    <div class="count" id="count"></div>
+    <ul id="list"></ul>
+    <div class="cat-note" id="cat-note"></div>
+    <div class="browse-footer">
+      all info is publicly available and organized here as a guide. always verify directly with the restaurant or event
+      before you go.
+      know a spot or event we missed? <a href="LINK_PLACEHOLDER" target="_blank">submit it here.</a> submissions are
+      reviewed and may take 24 to 48 hours to appear, sometimes longer. &nbsp;&middot;&nbsp;
+      <a href="faq.html">what is this?</a> &nbsp;&middot;&nbsp;
+      <a href="legal.html">terms &amp; privacy</a>
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+       AIRTABLE CONFIG
+       Steps to set up:
+       1. Create a free account at airtable.com
+       2. Create a base called "Let's Get Some Food"
+       3. Create two tables: "Restaurants" and "Free Events"
+       4. Restaurants columns: Name, Area, Tags, Website, Deal, Status
+          - Tags: comma separated e.g. korean, fried chicken, cheap, ne
+          - Status: single select with options Approved / Pending / Rejected
+       5. Free Events columns: Name, Area, Tags, Source, Status
+          - Status: single select with options Approved / Pending / Rejected
+       6. Go to airtable.com/create/tokens and create a Personal Access Token
+          - Scope: data.records:read
+          - Access: your base only
+       7. Find your Base ID: open your base, the URL looks like
+          airtable.com/appXXXXXXXX/... — copy the appXXXXXX part
+       8. Paste your token and base ID below
+       9. Paste your Airtable form URLs for submissions
+       ============================================================ */
+    const AIRTABLE_TOKEN = "patR739zUTkS4oKka.2d560dcc1fd74b79b277f558329f7c49f941aa40f88597e1520977cfb64f3164TE_YOUR_TOKEN_HERE";
+    const AIRTABLE_BASE_ID = "appeiJ6yicDZeRx5W";
+    const SUBMIT_FORM_URL = "https://airtable.com/appeiJ6yicDZeRx5W/pagKNGL3Ca0SLl1n8/form";
+
+    /* ============================================================
+       FALLBACK DATA
+       This shows while Airtable loads, or if it fails.
+       Once your Airtable base is connected, this is your safety net.
+       You can keep it updated or leave it as-is.
+       ============================================================ */
+    const FALLBACK_SPOTS = [
+      { name: "Hankook Chicken", area: "NE \u00b7 Korean fried chicken", tags: ["korean", "fried chicken", "chicken", "ne"], website: "", deal: "" },
+      { name: "JinBar", area: "Bridgeland \u00b7 NE", tags: ["korean", "fried chicken", "chicken", "ne"], website: "", deal: "" },
+      { name: "Hankki", area: "Multiple locations \u00b7 Korean street food", tags: ["korean", "ne", "downtown", "cheap"], website: "", deal: "rice bowls and Korean street snacks under $20" },
+      { name: "Pho Dau Bo", area: "International Ave \u00b7 SE \u00b7 since 2008", tags: ["vietnamese", "pho", "noodles", "cheap", "se"], website: "", deal: "large pho bowls under $14" },
+      { name: "Native Tongues Taqueria", area: "Victoria Park \u00b7 downtown", tags: ["mexican", "tacos", "cheap", "downtown", "near grounds"], website: "", deal: "happy hour tacos 25% off, 2\u20134pm weekdays" },
+      { name: "Pizza Culture", area: "Neapolitan \u00b7 world top 100 \u00b7 SW", tags: ["pizza", "italian", "vegetarian", "sw"], website: "", deal: "" },
+      { name: "Boogie's Burgers", area: "Renfrew \u00b7 NE \u00b7 since 1969", tags: ["burgers", "chicken", "ne"], website: "https://boogiesburgers.com", deal: "" },
+      { name: "Silver Dragon", area: "Chinatown \u00b7 since 1966", tags: ["chinese", "dim sum", "downtown", "near grounds"], website: "https://silverdragoncalgary.com", deal: "" },
+      { name: "Shiki Menya", area: "SW \u00b7 tonkotsu \u00b7 dine-in only", tags: ["japanese", "ramen", "noodles", "sw"], website: "", deal: "" },
+      { name: "Shokunin", area: "4th St SW \u00b7 izakaya \u00b7 nationally ranked", tags: ["japanese", "sushi", "ramen", "sw"], website: "", deal: "" },
+      { name: "Calcutta Cricket Club", area: "1 St SW \u00b7 modern Indian \u00b7 downtown", tags: ["indian", "downtown", "near grounds"], website: "", deal: "" },
+      { name: "Tacos Mexico", area: "Memorial Dr SE \u00b7 20+ varieties", tags: ["mexican", "tacos", "cheap", "se"], website: "", deal: "street tacos from around $4" }
+    ];
+
+    const FALLBACK_EVENTS = [
+      { name: "First Flip \u2014 Stephen Ave", area: "Thu Jul 2 \u00b7 7:30\u201310:30am \u00b7 Stephen Ave, downtown", tags: ["free breakfast", "downtown", "near grounds"], source: "https://dailyhive.com/calgary/free-calgary-stampede-breakfasts-2026" },
+      { name: "Stampede Park Pancake Breakfast", area: "Jul 4\u201312 \u00b7 8\u201310am \u00b7 GMC Stadium Courtyard", tags: ["free breakfast", "near grounds", "se"], source: "https://www.calgarystampede.com/stampede/value-days" },
+      { name: "Bowness Stampede Breakfast", area: "Sat Jul 4 \u00b7 7\u201311am \u00b7 Bowness Mall lot", tags: ["free breakfast", "nw"], source: "https://www.freestampedepancakes.com/SeeAllEvents" },
+      { name: "YMCA Stampede Breakfasts", area: "Multiple dates + locations across the city", tags: ["free breakfast", "ne", "nw", "se", "sw"], source: "https://www.ymcacalgary.org/stampede-breakfast" }
+    ];
+
+    const POPULAR_CRAVINGS = ["fried chicken", "tacos", "pizza", "sushi", "ramen", "pho", "burgers", "noodles"];
+    const NICHE_CRAVINGS = ["bbq", "dim sum", "hotpot", "late night", "dessert", "ice cream", "coffee", "vegetarian", "wings", "brunch", "seafood", "sandwiches", "wraps"];
+    const POPULAR_CUISINES = ["japanese", "korean", "vietnamese", "chinese", "indian", "thai", "mexican", "italian"];
+    const NICHE_CUISINES = ["nepali", "pakistani", "ethiopian", "filipino", "middle eastern", "caribbean", "greek", "french", "ukrainian", "latin american"];
+    const LOCATIONS = ["near grounds", "downtown", "nw", "ne", "sw", "se"];
+    const LOC_LABELS = { "near grounds": "near grounds", "downtown": "downtown", "nw": "NW", "ne": "NE", "sw": "SW", "se": "SE" };
+
+    const CAT_COPY = {
+      good: {
+        title: "local spots",
+        desc: "Calgary originals, independents, and one-of-a-kinds. Places that started here and reflect what Calgary actually tastes like.",
+        note: "Info is based on publicly available sources. Things change. Always confirm before you go."
+      },
+      cheap: {
+        title: "under $20*",
+        desc: "Meals listed at or under $20 before tax. Always confirm before you order.",
+        note: "* Prices are before tax and based on publicly available info at the time of listing. And if you tip your server, you're a good person."
+      },
+      free: {
+        title: "eat for free*",
+        desc: "Free food events happening around Calgary. If nothing is listed, nothing is on right now.",
+        note: "* Each event links to its public source. Always verify with the organizer before showing up."
+      }
+    };
+
+    let SPOTS = [], EVENTS = [];
+    let foodActive = null, locActive = null, mode = "good", sortMode = "default";
+    let dataLoaded = false;
+
+    /* ── Airtable fetch ── */
+    async function fetchTable(tableName) {
+      const url = "https://api.airtable.com/v0/" + AIRTABLE_BASE_ID + "/" + encodeURIComponent(tableName)
+        + "?filterByFormula=Status%3D%22Approved%22&pageSize=100";
+      const res = await fetch(url, { headers: { Authorization: "Bearer " + AIRTABLE_TOKEN } });
+      if (!res.ok) throw new Error("Airtable error " + res.status);
+      const json = await res.json();
+      return json.records || [];
+    }
+
+    function parseSpot(rec) {
+      const f = rec.fields;
+      const tags = (f.Tags || "").split(",").map(function (t) { return t.trim().toLowerCase(); }).filter(Boolean);
+      return { name: (f.Name || "").trim(), area: (f.Area || "").trim(), tags: tags, website: (f.Website || "").trim(), deal: (f.Deal || "").trim() };
+    }
+
+    function parseEvent(rec) {
+      const f = rec.fields;
+      const tags = (f.Tags || "").split(",").map(function (t) { return t.trim().toLowerCase(); }).filter(Boolean);
+      return { name: (f.Name || "").trim(), area: (f.Area || "").trim(), tags: tags, source: (f.Source || "").trim() };
+    }
+
+    async function loadFromAirtable() {
+      if (AIRTABLE_TOKEN.indexOf("PASTE_") > -1 || AIRTABLE_BASE_ID.indexOf("PASTE_") > -1) throw new Error("not configured");
+      const [spotRecs, eventRecs] = await Promise.all([fetchTable("Restaurants"), fetchTable("Free Events")]);
+      SPOTS = spotRecs.map(parseSpot).filter(function (s) { return s.name; });
+      EVENTS = eventRecs.map(parseEvent).filter(function (e) { return e.name; });
+    }
+
+    /* ── Filter helpers ── */
+    function pillBtn(tag, label, dim) { return '<button class="pill" data-tag="' + tag + '" data-dim="' + dim + '" onclick="pick(\'' + dim + '\',\'' + tag + '\')">' + label + '</button>'; }
+    function buildFilters() {
+      let cf = POPULAR_CRAVINGS.map(function (t) { return pillBtn(t, t, "food"); }).join("");
+      cf += '<select class="more" onchange="pick(\'food\',this.value);this.selectedIndex=0;"><option value="">more&hellip;</option>' + NICHE_CRAVINGS.map(function (t) { return '<option value="' + t + '">' + t + '</option>'; }).join("") + '</select>';
+      document.getElementById("craving-filters").innerHTML = cf;
+      let cuf = POPULAR_CUISINES.map(function (t) { return pillBtn(t, t, "food"); }).join("");
+      cuf += '<select class="more" onchange="pick(\'food\',this.value);this.selectedIndex=0;"><option value="">more&hellip;</option>' + NICHE_CUISINES.map(function (t) { return '<option value="' + t + '">' + t + '</option>'; }).join("") + '</select>';
+      document.getElementById("cuisine-filters").innerHTML = cuf;
+      document.getElementById("location-filters").innerHTML = LOCATIONS.map(function (t) { return pillBtn(t, LOC_LABELS[t], "loc"); }).join("");
+    }
+
+    /* ── Rendering ── */
+    function baseSet() {
+      if (mode === "free") return EVENTS;
+      if (mode === "cheap") return SPOTS.filter(function (s) { return s.tags.indexOf("cheap") > -1; });
+      return SPOTS;
+    }
+    function actionsHTML(s) {
+      if (s.source !== undefined) {
+        return s.source ? '<span class="actions"><a target="_blank" href="' + s.source + '">source \u2197</a></span>' : "";
+      }
+      const dest = encodeURIComponent(s.name + " Calgary");
+      const dir = '<a target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=' + dest + '">directions \u2197</a>';
+      const web = s.website ? '<a target="_blank" href="' + s.website + '">website \u2197</a>' : '<span class="nw">no website</span>';
+      return '<span class="actions">' + dir + ' ' + web + '</span>';
+    }
+    function secondLine(s) {
+      if (mode === "cheap" && s.deal) return '<span class="deal-line">' + s.deal + '</span>';
+      return '<span class="meta">' + s.area + '</span>';
+    }
+    function shuffle(arr) { for (var i = arr.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = arr[i]; arr[i] = arr[j]; arr[j] = t; } return arr; }
+    function setSort(s) {
+      sortMode = s;
+      document.querySelectorAll(".sort-btn").forEach(function (b) { b.classList.toggle("active", b.dataset.sort === s); });
+      render();
+    }
+    function applySort(arr) {
+      if (sortMode === "alpha") return arr.slice().sort(function (a, b) { return a.name.localeCompare(b.name); });
+      if (sortMode === "recent") return arr.slice().reverse();
+      return shuffle(arr.slice());
+    }
+    function render() {
+      const base = applySort(baseSet());
+      const shown = base.filter(function (s) {
+        return (!foodActive || s.tags.indexOf(foodActive) > -1) && (!locActive || s.tags.indexOf(locActive) > -1);
+      });
+      if (shown.length === 0) {
+        document.getElementById("list").innerHTML = "";
+        document.getElementById("count").innerHTML = '<span class="empty">nothing found. <button class="clear" onclick="resetFilters()">clear filters</button></span>';
+        return;
+      }
+      document.getElementById("list").innerHTML = shown.map(function (s) {
+        return '<li><span><span class="name">' + s.name + '</span> ' + secondLine(s) + '</span>' + actionsHTML(s) + '</li>';
+      }).join("");
+      const label = mode === "free" ? "free events" : mode === "cheap" ? "spots under $20" : "local spots";
+      const bits = [];
+      if (foodActive) bits.push('"' + foodActive + '"');
+      if (locActive) bits.push(LOC_LABELS[locActive]);
+      const c = document.getElementById("count");
+      if (bits.length) { c.innerHTML = shown.length + " " + label + " \u00b7 " + bits.join(" + ") + '&nbsp;<button class="clear" onclick="resetFilters()">clear</button>'; }
+      else { c.textContent = shown.length + " " + label + "." + (mode === "good" ? " tap a filter above." : ""); }
+    }
+    function pick(dim, val) {
+      if (!val) return;
+      if (dim === "food") foodActive = (foodActive === val) ? null : val;
+      else if (dim === "loc") locActive = (locActive === val) ? null : val;
+      syncPills(); render();
+    }
+    function syncPills() {
+      document.querySelectorAll(".pill").forEach(function (p) {
+        var d = p.dataset.dim, t = p.dataset.tag;
+        p.classList.toggle("active", (d === "food" && t === foodActive) || (d === "loc" && t === locActive));
+      });
+    }
+    function resetFilters() { foodActive = null; locActive = null; syncPills(); render(); }
+
+    /* ── Navigation ── */
+    function openBrowse(which) {
+      mode = which; foodActive = null; locActive = null; sortMode = "default";
+      document.querySelectorAll(".sort-btn").forEach(function (b) { b.classList.toggle("active", b.dataset.sort === "default"); });
+      const copy = CAT_COPY[which];
+      document.getElementById("cat-title").textContent = copy.title;
+      document.getElementById("cat-desc").textContent = copy.desc;
+      document.getElementById("cat-note").textContent = copy.note;
+      document.getElementById("filter-block").classList.toggle("hidden", which === "free");
+      document.getElementById("sort-bar").classList.toggle("hidden", which === "free");
+      document.getElementById("home").classList.add("hidden");
+      document.getElementById("browse").classList.remove("hidden");
+      syncPills(); window.scrollTo(0, 0);
+      if (dataLoaded) { render(); }
+      else {
+        document.getElementById("list").innerHTML = "";
+        document.getElementById("count").innerHTML = '<span class="loading">loading\u2026</span>';
+        loadFromAirtable().then(function () {
+          dataLoaded = true; render();
+        }).catch(function () {
+          SPOTS = FALLBACK_SPOTS; EVENTS = FALLBACK_EVENTS; dataLoaded = true; render();
+        });
+      }
+    }
+    function goHome() {
+      document.getElementById("browse").classList.add("hidden");
+      document.getElementById("home").classList.remove("hidden");
+      window.scrollTo(0, 0);
+    }
+
+    /* ── Init ── */
+    buildFilters();
+    syncPills();
+    if (SUBMIT_FORM_URL.indexOf("PASTE_") === -1) {
+      document.querySelectorAll("a[href='LINK_PLACEHOLDER']").forEach(function (a) { a.href = SUBMIT_FORM_URL; });
+    }
+  </script>
+</body>
+
+</html>
