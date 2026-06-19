@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -221,12 +221,19 @@ let dataLoaded = false;
 
 /* ── Airtable fetch ── */
 async function fetchTable(tableName){
-  const url = "https://api.airtable.com/v0/"+AIRTABLE_BASE_ID+"/"+encodeURIComponent(tableName)
+  let allRecords = [];
+  let offset = null;
+  do {
+    let url = "https://api.airtable.com/v0/"+AIRTABLE_BASE_ID+"/"+encodeURIComponent(tableName)
             + "?filterByFormula=Status%3D%22Approved%22&pageSize=100";
-  const res = await fetch(url, { headers:{ Authorization:"Bearer "+AIRTABLE_TOKEN } });
-  if(!res.ok) throw new Error("Airtable error "+res.status);
-  const json = await res.json();
-  return json.records || [];
+    if(offset) url += "&offset="+offset;
+    const res = await fetch(url, { headers:{ Authorization:"Bearer "+AIRTABLE_TOKEN } });
+    if(!res.ok) throw new Error("Airtable error "+res.status);
+    const json = await res.json();
+    allRecords = allRecords.concat(json.records || []);
+    offset = json.offset || null;
+  } while(offset);
+  return allRecords;
 }
 
 function parseSpot(rec){
